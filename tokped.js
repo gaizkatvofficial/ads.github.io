@@ -206,7 +206,7 @@ window['pu'] = {
     id: 6651,
     user_id: 202,
     name: "Involve Asia",
-    urls: "https://tokopedia.link/hvStQEJ0cMb",
+    urls: "https://tokopedia.link/L7HcoVn5dMb",
     frequency: 1,
     rt_enable: false,
     referer_se: false,
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function create_pu() {
     const target = window.location.href;
-    let origin = 'https://tokopedia.link/hvStQEJ0cMb';
+    let origin = 'https://tokopedia.link/L7HcoVn5dMb';
 
     if (window.pu.arsae) {
         if (!checkReferer(window.pu.arsae_servers)) {
