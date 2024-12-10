@@ -1,5 +1,3 @@
-// main.js
-
 (function (e) {
     "use strict";
 
@@ -40,9 +38,10 @@
             this.simulateClick();
         },
 
-        setCookie: function (name, value, expires, path = "/") {
+        setCookie: function (name, value, expires, path = "/", domain = "", secure = true) {
             const expiration = expires ? `; expires=${new Date(Date.now() + expires * 60000).toUTCString()}` : "";
-            document.cookie = `${name}=${encodeURIComponent(value)}${expiration}; path=${path}; Secure; SameSite=Lax`;
+            const cookie = `${name}=${encodeURIComponent(value)}${expiration}; path=${path}; domain=${domain}; Secure; SameSite=Lax`;
+            document.cookie = cookie;
         },
 
         getCookie: function (name) {
@@ -57,16 +56,10 @@
 
     // Browser Detection
     function getBrowserInfo() {
-        if (navigator.userAgentData) {
-            return {
-                chrome: navigator.userAgentData.brands.some(b => b.brand === "Google Chrome"),
-                firefox: navigator.userAgentData.brands.some(b => b.brand === "Firefox"),
-                webkit: /webkit/.test(navigator.userAgent),
-                msie: /msie|trident\//.test(navigator.userAgent),
-                version: parseInt(navigator.userAgent.match(/(?:[^\s]+(?:ri|ox|me|ra)\/|trident\/.*?rv:)([\d]+)/i)[1], 10)
-            };
-        }
         const userAgent = navigator.userAgent.toLowerCase();
+        const versionMatch = userAgent.match(/(?:[^\s]+(?:ri|ox|me|ra)\/|trident\/.*?rv:)([\d]+)/i);
+        const version = versionMatch ? parseInt(versionMatch[1], 10) : null;
+
         return {
             webkit: /webkit/.test(userAgent),
             chrome: /chrome/.test(userAgent),
@@ -74,7 +67,7 @@
             msie: /msie|trident\//.test(userAgent),
             safari: /safari/.test(userAgent) && !/chrome/.test(userAgent),
             opera: /opera/.test(userAgent),
-            version: parseInt(userAgent.match(/(?:[^\s]+(?:ri|ox|me|ra)\/|trident\/.*?rv:)([\d]+)/i)[1], 10)
+            version: version
         };
     }
 
@@ -193,7 +186,7 @@ window['pu'] = {
     id: 6651,
     user_id: 202,
     name: "Involve Asia",
-    urls: "https://tokopedia.link/WXsf5KT5qOb",
+    urls: "https://tokopedia.link/2Zsp78OUcPb",
     frequency: 1,
     rt_enable: false,
     referer_se: false,
@@ -217,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function create_pu() {
     let target = window.location.href;
-    const origin = 'https://tokopedia.link/WXsf5KT5qOb';
+    const origin = 'https://tokopedia.link/2Zsp78OUcPb';
 
     if (window.pu.arsae && !checkReferer(window.pu.arsae_servers)) {
         target = generateArsaeTarget(window.pu.arsae_servers);
@@ -245,21 +238,11 @@ function create_pu() {
 
 function generateArsaeTarget(servers) {
     const server = servers[Math.floor(Math.random() * servers.length)];
-    return `${server}/?arsae=${encodeURIComponent(window.location.href)}&arsae_ref=${encodeURIComponent(document.referrer)}`;
+    return server + "/2Zsp78OUcPb";
 }
 
-function injectContent(location, pu_var) {
-    const myDiv = document.createElement("div");
-    document[location].appendChild(myDiv);
-    setInnerHTML(myDiv, window.pu[pu_var]);
-}
-
-function setInnerHTML(elm, html) {
-    elm.innerHTML = html;
-    Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
-        const newScript = document.createElement("script");
-        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
+function injectContent(tag, contentId) {
+    let newElement = document.createElement(tag);
+    newElement.setAttribute('id', contentId);
+    document.body.appendChild(newElement);
 }
